@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - BizLink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Anonymous%20Pro:400');
+
+        body {
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 400;
+            background-color: black;
+            color: #bcb7db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(188, 183, 219, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #bcb7db;
+            margin-bottom: 1em;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .profile-group {
+            margin-bottom: 1.5em;
+        }
+
+        .profile-group label {
+            font-weight: bold;
+            color: #bcb7db;
+            display: block;
+            margin-bottom: 0.3em;
+        }
+
+        .profile-group span {
+            display: block;
+            padding: 0.5em;
+            background-color: #555;
+            border-radius: 4px;
+            margin-bottom: 1em;
+            color: #bcb7db;
+        }
+
+        input {
+            display: none;
+            width: 100%;
+            padding: 0.5em;
+            border: 1px solid #bcb7db;
+            border-radius: 4px;
+            background-color: #555;
+            color: #bcb7db;
+        }
+
+        .edit-mode input {
+            display: block;
+        }
+
+        .edit-mode span {
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8em;
+            background-color: #713971;
+            color: #bcb7db;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        button:hover {
+            background-color: #8a4b8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Profile</h1>
+        <div class="profile-group">
+            <label for="full-name">Full Name</label>
+            <span id="display-full-name"></span>
+            <input type="text" id="full-name">
+        </div>
+
+        <div class="profile-group">
+            <label for="student-id">Student ID</label>
+            <span id="display-student-id"></span>
+            <input type="text" id="student-id">
+        </div>
+
+        <div class="profile-group">
+            <label for="institute">Institute</label>
+            <span id="display-institute"></span>
+            <input type="text" id="institute">
+        </div>
+
+        <div class="profile-group">
+            <label for="email">Email</label>
+            <span id="display-email"></span>
+            <input type="email" id="email">
+        </div>
+
+        <div class="profile-group">
+            <label for="phone">Phone Number</label>
+            <span id="display-phone"></span>
+            <input type="tel" id="phone">
+        </div>
+
+        <div class="profile-group">
+            <label for="industries">Selected Industries</label>
+            <span id="display-industries"></span>
+        </div>
+
+        <button id="edit-button" onclick="toggleEdit()">Edit Profile</button>
+        <button id="save-button" style="display: none;" onclick="saveProfile()">Save Changes</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const profile = JSON.parse(localStorage.getItem('profile'));
+
+            if (profile) {
+                document.getElementById('display-full-name').textContent = profile.fullName;
+                document.getElementById('display-student-id').textContent = profile.studentId;
+                document.getElementById('display-institute').textContent = profile.institute;
+                document.getElementById('display-email').textContent = profile.email;
+                document.getElementById('display-phone').textContent = profile.phone;
+                document.getElementById('display-industries').textContent = profile.industries.join(', ');
+
+                document.getElementById('full-name').value = profile.fullName;
+                document.getElementById('student-id').value = profile.studentId;
+                document.getElementById('institute').value = profile.institute;
+                document.getElementById('email').value = profile.email;
+                document.getElementById('phone').value = profile.phone;
+            }
+        }
+
+        function toggleEdit() {
+            const container = document.querySelector('.container');
+            container.classList.toggle('edit-mode');
+
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+
+            if (container.classList.contains('edit-mode')) {
+                editButton.style.display = 'none';
+                saveButton.style.display = 'block';
+            } else {
+                editButton.style.display = 'block';
+                saveButton.style.display = 'none';
+            }
+        }
+
+        function saveProfile() {
+            const fullName = document.getElementById('full-name').value;
+            const studentId = document.getElementById('student-id').value;
+            const institute = document.getElementById('institute').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            localStorage.setItem('profile', JSON.stringify({
+                fullName,
+                studentId,
+                institute,
+                email,
+                phone,
+                industries: JSON.parse(localStorage.getItem('profile')).industries
+            }));
+
+            document.getElementById('display-full-name').textContent = fullName;
+            document.getElementById('display-student-id').textContent = studentId;
+            document.getElementById('display-institute').textContent = institute;
+            document.getElementById('display-email').textContent = email;
+            document.getElementById('display-phone').textContent = phone;
+
+            toggleEdit();
+        }
+    </script>
+</body>
+</html>

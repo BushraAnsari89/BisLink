@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - BizLink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Anonymous%20Pro:400');
+
+        /* Basic reset and styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 400;
+            background-color: black;
+            color: #bcb7db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(188, 183, 219, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 1em;
+            text-align: center;
+            color: #bcb7db;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+
+        .form-group div {
+            flex: 1;
+            margin-right: 1em;
+        }
+
+        .form-group div:last-child {
+            margin-right: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            color: #bcb7db;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #bcb7db;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #555;
+            color: #bcb7db;
+        }
+
+        select {
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        #selected-industry {
+            margin-top: 1em;
+            padding: 0.8em;
+            border: 1px solid #bcb7db;
+            border-radius: 4px;
+            background-color: #555;
+            color: #bcb7db;
+            min-height: 50px;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8em;
+            background-color: #713971;
+            color: #bcb7db;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        button:hover {
+            background-color: #8a4b8a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Student Profile</h1>
+        <form id="regForm" onsubmit="saveProfileData(event)">
+            <div class="form-group">
+                <div>
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" name="full-name" required>
+                </div>
+                <div>
+                    <label for="student-id">Student ID</label>
+                    <input type="text" id="student-id" name="student-id" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label for="institute">Institute</label>
+                    <input type="text" id="institute" name="institute" required>
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+            </div>
+
+            <label for="industry">Select Industry Interested In</label>
+            <select id="industry" name="industries" multiple onchange="updateSelectedIndustry()" required>
+                <option value="Accessories">Accessories</option>
+                <option value="Food">Food</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Education">Education</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Homeware">Homeware</option>
+                <option value="Technology">Technology</option>
+                <option value="Health Care">Health Care</option>
+            </select>
+
+            <div id="selected-industry">Selected Industry:</div><br>
+
+            <button type="submit">Save Profile</button>
+        </form>
+    </div>
+
+    <script>
+        // Update selected industries
+        function updateSelectedIndustry() {
+            const selectElement = document.getElementById('industry');
+            const selectedIndustryDiv = document.getElementById('selected-industry');
+            const selectedOptions = Array.from(selectElement.selectedOptions)
+                .map(option => option.text)
+                .join(', ');
+            selectedIndustryDiv.textContent = `Selected Industry: ${selectedOptions}`;
+        }
+
+        // Save form data to localStorage and redirect to profile page
+        function saveProfileData(event) {
+            event.preventDefault(); // Prevent form submission
+            const fullName = document.getElementById('full-name').value;
+            const studentId = document.getElementById('student-id').value;
+            const institute = document.getElementById('institute').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const industries = Array.from(document.getElementById('industry').selectedOptions)
+                                   .map(option => option.text);
+            
+            // Store data in localStorage
+            localStorage.setItem('profile', JSON.stringify({
+                fullName,
+                studentId,
+                institute,
+                email,
+                phone,
+                industries
+            }));
+            
+            // Redirect to "My Profile" page
+            window.location.href = "my-profile.html";
+        }
+    </script>
+
+</body>
+</html>

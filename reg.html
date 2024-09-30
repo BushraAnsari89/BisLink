@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizLink Registration</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Anonymous%20Pro:400');
+
+        html {
+            font-size: 100%; /* 16px */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: black;
+            color: #bcb7db;
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 400;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #bcb7db;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .logo {
+            font-size: 4.210rem; /* 67.36px */
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #bcb7db;
+            text-align: center;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .selection-boxes {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .box {
+            width: 45%;
+            background-color: #713971;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(188, 183, 219, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(188, 183, 219, 0.3), 0 0 40px rgba(188, 183, 219, 0.1);
+        }
+
+        .box-title {
+            font-size: 2.369rem; /* 37.92px */
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #bcb7db;
+        }
+
+        .description {
+            font-size: 1rem; /* 16px */
+            color: #bcb7db;
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #bcb7db;
+            margin: 10px 0;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        .login-button {
+            background-color: #713971;
+            color: #bcb7db;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.333rem; /* 21.28px */
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .login-button:hover {
+            background-color: #8a4b8a;
+        }
+
+        small {
+            font-size: 0.750rem; /* 12px */
+            color: #bcb7db;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="logo">BizLink</h1>
+        <div class="selection-boxes">
+            
+            <!-- Student Section -->
+            <div class="box">
+                <h3 class="box-title">Student</h3>
+                <div class="divider"></div>
+                <p class="description">
+                    Join BizLink as a student and unlock a world of opportunities. Connect with top brands for internships and job opportunities, secure sponsorships for your projects and events, and build a professional network with industry leaders. Showcase your skills and portfolio to potential employers, and access exclusive resources and workshops for career development. BizLink is your gateway to building a successful future. Take the first step towards your dream career by registering now and exploring the endless possibilities that await you in the professional world.
+                </p>
+            </div>
+
+            <!-- Brand Section -->
+            <div class="box">
+                <h3 class="box-title">Brand</h3>
+                <div class="divider"></div>
+                <p class="description">
+                    Elevate your brand with BizLink and tap into a vibrant community of talented students and future industry leaders. Discover and recruit top student talent, promote your products or services to a targeted audience, and engage with a community of innovative and enthusiastic young professionals. Participate in campus events and career fairs to increase your brand visibility and build lasting connections. By joining BizLink, you'll have the opportunity to shape the next generation of professionals while expanding your brand's reach and influence. Register today to start building meaningful relationships with the brightest minds of tomorrow.
+                </p>
+            </div>
+
+        </div>
+        
+        <!-- Already signed in button -->
+        <div class="button-container">
+            <a href="login.html" class="login-button">Already signed in?</a>
+        </div>
+    </div>
+    
+</body>
+</html>

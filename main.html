@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main - BizLink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Anonymous%20Pro:400');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
+        }
+
+        body {
+            background-color: black;
+            color: #bcb7db;
+        }
+       
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            width: 100%;
+            position: relative;
+        }
+
+        nav h1 {
+            font-size: 65px;
+            font-family: 'Space Grotesk';
+            font-weight: 700;
+            cursor: pointer;
+            margin: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .nav-left button, .nav-right button {
+            background-color: #555;
+            color: white;
+            padding: 1em 1.5em;
+            font-size: 17px;
+            height: 50px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-left button:hover, .nav-right button:hover {
+            background-color: #777;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #444;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .slider {
+            position: relative;
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 500px;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .slide:hover img {
+            transform: scale(1.1);
+        }
+
+        .brand-info {
+            text-align: center;
+            margin-top: 10px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .slider-container {
+            max-width: 900px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section {
+            max-width: 900px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #333;
+            color: #bcb7db;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .info-section p {
+            font-size: 16px;
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .brand-profiles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .brand-profile {
+            width: calc(33.333% - 20px);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .brand-image-container {
+            width: 100%;
+            padding-top: 100%;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .brand-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-images-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .brand-image-container:hover .brand-images-overlay {
+            opacity: 1;
+        }
+
+        .sub-image-container {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 7px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .sub-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .sub-image-container:hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            border-radius: 15px;
+        }
+
+        .sub-image-container:hover .sub-image {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .brand-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .like-btn, .follow-btn {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .like-btn {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .follow-btn {
+            background-color: #2ed573;
+            color: white;
+        }
+
+        .like-btn:hover, .follow-btn:hover {
+            opacity: 0.8;
+        }
+
+        .like-btn.liked {
+            background-color: #ff6b81;
+        }
+
+        .follow-btn.followed {
+            background-color: #7bed9f;
+        }
+
+        .brand-images-overlay img.enlarged {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: auto;
+            max-width: 90vw;
+            max-height: 90vh;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .overlay-background {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .brand-profile {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-profile {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <div class="dropdown">
+                <button>Industries</button>
+                <div class="dropdown-content">
+                    <a href="services.html">Services</a>
+                    <a href="#">Products</a>
+                </div>
+            </div>
+
+            <button onclick="location.href='about.html'">About Us</button>
+        </div>
+
+        <h1 onclick="location.href='main.html'">BizLink</h1>
+
+        <div class="nav-right">
+            <div class="dropdown">
+                <button>My Account</button>
+                <div class="dropdown-content">
+                    <a href="student_profile.html">Student Profile</a>
+                    <a href="brand_profile.html">Brand Profile</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button>View Account</button>
+                <div class="dropdown-content">
+                    <a href="login.html">Sign In</a>
+                    <a href="reg.html">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slides" id="slides">
+                    <div class="slide">
+                        <img src="images/image1.jpg" alt="Brand Image 1">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image2.jpg" alt="Brand Image 2">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image3.jpg" alt="Brand Image 3">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image4.jpg" alt="Brand Image 4">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image5.jpg" alt="Brand Image 5">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image6.jpg" alt="Brand Image 6">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image7.jpg" alt="Brand Image 7">
+                    </div>
+                    <div class="slide">
+                        <img src="images/image8.jpg" alt="Brand Image 8">
+                    </div>
+                </div>
+                <div class="brand-info" id="brandInfo">Brand Name | Industry</div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Welcome to BizLink</h2>
+            <p>BizLink is your gateway to connecting with innovative brands and talented students. Our platform facilitates meaningful collaborations, bringing fresh perspectives to established businesses and providing valuable experience to emerging professionals. Explore our diverse range of industries and discover the perfect match for your next project or career opportunity.</p>
+            <p>BizLink offers an innovative way to engage with the student community, enabling brands to identify emerging talent, promote their products or services, and foster collaborations. Brands can use the platform to sponsor student events, gain visibility among young, tech-savvy audiences, and create long-term partnerships with educational institutions.</p>
+            <p>BizLink provides businesses with tools to effectively communicate their brand message to a targeted audience, while also offering customizable sponsorship opportunities that align with their marketing goals. By fostering interactions with students, brands can build a loyal customer base and gain fresh perspectives on emerging market trends, driving growth and innovation.</p>
+
+            <p>Our platform serves as a bridge between academia and industry, creating a dynamic ecosystem where ideas flourish and partnerships thrive. Students gain real-world experience and exposure to potential career paths, while businesses benefit from fresh perspectives and access to a pool of emerging talent.</p>
+            <p>Through BizLink, companies can participate in virtual career fairs, host online workshops, and engage in mentorship programs. These initiatives not only help brands in their recruitment efforts but also contribute to the professional development of students, preparing them for the challenges of the modern workplace.</p>
+            <p>As the business landscape continues to evolve, BizLink remains at the forefront of innovation, constantly adapting to meet the changing needs of both students and brands. Our commitment to fostering meaningful connections and driving mutual growth sets us apart in the world of professional networking and collaboration.</p>
+        </div>
+    </div>
+
+    <div class="brand-profiles">
+        <div class="brand-profile">
+            <div class="brand-image-container">
+                <img src="images/brand1.jpg" alt="Brand 1" class="brand-image">
+                <div class="brand-images-overlay">
+                    <div class="sub-image-container">
+                        <img src="images/brand1_2.jpg" alt="Brand 1 Image 2" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand1_3.jpg" alt="Brand 1 Image 3" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand1_4.jpg" alt="Brand 1 Image 4" class="sub-image">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-name">Brand 1</div>
+            <div class="brand-actions">
+                <button class="like-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i></button>
+                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+
+        <div class="brand-profile">
+            <div class="brand-image-container">
+                <img src="images/brand2.jpg" alt="Brand 2" class="brand-image">
+                <div class="brand-images-overlay">
+                    <div class="sub-image-container">
+                        <img src="images/brand2_2.jpg" alt="Brand 2 Image 2" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand2_3.jpg" alt="Brand 2 Image 3" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand2_4.jpg" alt="Brand 2 Image 4" class="sub-image">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-name">Brand 2</div>
+            <div class="brand-actions">
+                <button class="like-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i></button>
+                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+
+        <div class="brand-profile">
+            <div class="brand-image-container">
+                <img src="images/brand3.jpg" alt="Brand 3" class="brand-image">
+                <div class="brand-images-overlay">
+                    <div class="sub-image-container">
+                        <img src="images/brand3_2.jpg" alt="Brand 3 Image 2" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand3_3.jpg" alt="Brand 3 Image 3" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand3_4.jpg" alt="Brand 3 Image 4" class="sub-image">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-name">Brand 3</div>
+            <div class="brand-actions">
+                <button class="like-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i></button>
+                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+
+        <div class="brand-profile">
+            <div class="brand-image-container">
+                <img src="images/brand4.jpg" alt="Brand 4" class="brand-image">
+                <div class="brand-images-overlay">
+                    <div class="sub-image-container">
+                        <img src="images/brand4_2.jpg" alt="Brand 4 Image 2" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand4_3.jpg" alt="Brand 4 Image 3" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand4_4.jpg" alt="Brand 4 Image 4" class="sub-image">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-name">Brand 4</div>
+            <div class="brand-actions">
+                <button class="like-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i></button>
+                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+
+        <div class="brand-profile">
+            <div class="brand-image-container">
+                <img src="images/brand5.jpg" alt="Brand 5" class="brand-image">
+                <div class="brand-images-overlay">
+                    <div class="sub-image-container">
+                        <img src="images/brand5_2.jpg" alt="Brand 5 Image 2" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand5_3.jpg" alt="Brand 5 Image 3" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand5_4.jpg" alt="Brand 5 Image 4" class="sub-image">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-name">Brand 5</div>
+            <div class="brand-actions">
+                <button class="like-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i></button>
+                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+
+        <div class="brand-profile">
+            <div class="brand-image-container">
+                <img src="images/brand6.jpg" alt="Brand 6" class="brand-image">
+                <div class="brand-images-overlay">
+                    <div class="sub-image-container">
+                        <img src="images/brand6_2.jpg" alt="Brand 6 Image 2" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand6_3.jpg" alt="Brand 6 Image 3" class="sub-image">
+                    </div>
+                    <div class="sub-image-container">
+                        <img src="images/brand6_4.jpg" alt="Brand 6 Image 4" class="sub-image">
+                    </div>
+                </div>
+            </div>
+            <div class="brand-name">Brand 6</div>
+            <div class="brand-actions">
+                <button class="like-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i></button>
+                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay-background"></div>
+
+    <script>
+        const slides = document.getElementById('slides');
+        const brandInfo = document.getElementById('brandInfo');
+        const images = [
+            { src: 'images/image1.jpg', name: 'Brand One', industry: 'Technology' },
+            { src: 'images/image2.jpg', name: 'Brand Two', industry: 'Fashion' },
+            { src: 'images/image3.jpg', name: 'Brand Three', industry: 'Food' },
+            { src: 'images/image4.jpg', name: 'Brand Four', industry: 'Education' },
+            { src: 'images/image5.jpg', name: 'Brand Five', industry: 'Beauty' },
+            { src: 'images/image6.jpg', name: 'Brand Six', industry: 'Homeware' },
+            { src: 'images/image7.jpg', name: 'Brand Seven', industry: 'Health Care' },
+            { src: 'images/image8.jpg', name: 'Brand Eight', industry: 'Marketing' },
+        ];
+
+        let currentIndex = 0;
+        let interval;
+
+        function showSlide(index) {
+            const totalSlides = images.length;
+            slides.style.transform = `translateX(-${index * 100}%)`;
+            brandInfo.textContent = `${images[index].name} | ${images[index].industry}`;
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % images.length;
+            showSlide(currentIndex);
+        }
+
+        function startSlider() {
+            interval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        }
+
+        function stopSlider() {
+            clearInterval(interval); // Stop the slider
+        }
+
+        // Add hover event listeners to pause and resume the slider
+        const slideElements = document.querySelectorAll('.slide');
+        slideElements.forEach(slide => {
+            slide.addEventListener('mouseenter', stopSlider);
+            slide.addEventListener('mouseleave', startSlider);
+        });
+
+        startSlider(); // Start the slider initially
+        showSlide(currentIndex); // Show the first slide initially
+
+        function toggleLike(btn) {
+            btn.querySelector('i').classList.toggle('fas');
+            btn.querySelector('i').classList.toggle('far');
+            btn.classList.toggle('liked');
+        }
+
+        function toggleFollow(btn) {
+            btn.classList.toggle('followed');
+            btn.textContent = btn.classList.contains('followed') ? 'Following' : 'Follow';
+        }
+
+        // New functions for image enlargement
+        const subImages = document.querySelectorAll('.sub-image');
+        const overlayBackground = document.querySelector('.overlay-background');
+
+        subImages.forEach(img => {
+            let timer;
+
+            img.addEventListener('mousedown', () => {
+                timer = setTimeout(() => {
+                    img.classList.add('enlarged');
+                    overlayBackground.style.display = 'block';
+                }, 500); // Hold for 500ms to enlarge
+            });
+
+            img.addEventListener('mouseup', () => {
+                clearTimeout(timer);
+            });
+
+            img.addEventListener('mouseleave', () => {
+                clearTimeout(timer);
+            });
+        });
+
+        overlayBackground.addEventListener('click', () => {
+            const enlargedImg = document.querySelector('.enlarged');
+            if (enlargedImg) {
+                enlargedImg.classList.remove('enlarged');
+            }
+            overlayBackground.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>

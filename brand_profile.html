@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Brand Profile - BizLink</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Anonymous%20Pro:400');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 400;
+            background-color: black;
+            color: #bcb7db;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2em;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(188, 183, 219, 0.1);
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 1em;
+            text-align: center;
+            color: #bcb7db;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+
+        .form-group div {
+            flex: 1;
+            margin-right: 1em;
+        }
+
+        .form-group div:last-child {
+            margin-right: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            color: #bcb7db;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8em;
+            margin-bottom: 1em;
+            border: 1px solid #bcb7db;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #555;
+            color: #bcb7db;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        #images-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            margin-bottom: 1em;
+        }
+
+        .image-preview-container {
+            position: relative;
+        }
+
+        .image-preview-container img {
+            max-width: 100px;
+            max-height: 100px;
+            border: 1px solid #bcb7db;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #713971;
+            color: #bcb7db;
+            border: none;
+            border-radius: 50%;
+            padding: 0.3em;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8em;
+            background-color: #713971;
+            color: #bcb7db;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        button:hover {
+            background-color: #8a4b8a;
+        }
+
+        .selected-industries {
+            margin-top: 1em;
+            font-weight: bold;
+            color: #bcb7db;
+        }
+
+        .modal {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .modal-close {
+            background-color: #713971;
+            color: #bcb7db;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Brand Profile</h1><br>
+        <form>
+            <div class="form-group">
+                <div>
+                    <label for="brand-name">Brand Name</label>
+                    <input type="text" id="brand-name" name="brand-name" required>
+                </div>
+                <div>
+                    <label for="industry">Working Industry</label>
+                    <select id="industry" name="industries" multiple onchange="updateSelectedIndustry()" required>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Food">Food</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Education">Education</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Beauty">Beauty</option>
+                        <option value="Homeware">Homeware</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Health Care">Health Care</option>
+                    </select>
+                    <div class="selected-industries" id="selected-industries"></div>
+                </div>
+            </div>
+
+            <label for="address">Address/Based In</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="recent-work">Select at least 5 pictures of recent work</label>
+            <input type="file" id="recent-work" name="recent-work" multiple accept="image/*" required onchange="previewImages()">
+            <div id="images-preview"></div>
+
+            <div class="form-group">
+                <div>
+                    <label for="alt-phone1">Alternate Phone Number 1</label>
+                    <input type="tel" id="alt-phone1" name="alt-phone1" required>
+                </div>
+                <div>
+                    <label for="alt-phone2">Alternate Phone Number 2</label>
+                    <input type="tel" id="alt-phone2" name="alt-phone2" required>
+                </div>
+            </div>
+
+            <label for="social-media">Link to Social Media</label>
+            <input type="url" id="social-media" name="social-media" placeholder="https://">
+
+            <label for="description">Description About Brand</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="motto">Select Brand Motto</label>
+            <select id="motto" name="motto" required>
+                <option value="collaborate">Collaborate</option>
+                <option value="sponsor">Sponsor</option>
+                <option value="promote">Promote</option>
+                <option value="create-community">Create Community</option>
+            </select>
+
+            <label for="seo-keywords">Add Keywords for SEO</label>
+            <input type="text" id="seo-keywords" name="seo-keywords" placeholder="Enter keywords, separated by commas">
+
+            <button type="submit">Save Profile</button>
+        </form>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <button class="modal-close" onclick="closeModal()">Close</button>
+        <img id="modalImage" src="" alt="Image Preview">
+    </div>
+
+    <script>
+        function updateSelectedIndustry() {
+            const selectElement = document.getElementById('industry');
+            const selectedIndustries = Array.from(selectElement.selectedOptions).map(option => option.text);
+            document.getElementById('selected-industries').innerText = "Selected Industries: " + selectedIndustries.join(', ');
+        }
+
+        const previewContainer = document.getElementById('images-preview');
+        let imageFiles = [];
+
+        function previewImages() {
+            const files = document.getElementById('recent-work').files;
+
+            previewContainer.innerHTML = '';
+
+            imageFiles = Array.from(files);
+
+            imageFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.createElement('div');
+                    container.classList.add('image-preview-container');
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.onclick = function() {
+                        openImageModal(e.target.result);
+                    };
+                    container.appendChild(img);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.innerText = 'X';
+                    deleteBtn.onclick = function() {
+                        deleteImage(index);
+                    };
+
+                    container.appendChild(deleteBtn);
+                    previewContainer.appendChild(container);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function deleteImage(index) {
+            imageFiles.splice(index, 1);
+
+            renderUpdatedImages();
+        }
+
+        function renderUpdatedImages() {
+            previewContainer.innerHTML = '';
+
+            imageFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.createElement('div');
+                    container.classList.add('image-preview-container');
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.onclick = function() {
+                        openImageModal(e.target.result);
+                    };
+                    container.appendChild(img);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.innerText = 'X';
+                    deleteBtn.onclick = function() {
+                        deleteImage(index);
+                    };
+
+                    container.appendChild(deleteBtn);
+                    previewContainer.appendChild(container);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+
+        function openImageModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        window.onload = function() {
+            const brandProfile = JSON.parse(localStorage.getItem('brandProfile'));
+
+            if (brandProfile) {
+                document.getElementById('brand-name').value = brandProfile.brandName || '';
+                document.getElementById('address').value = brandProfile.address || '';
+                document.getElementById('alt-phone1').value = brandProfile.altPhone1 || '';
+                document.getElementById('alt-phone2').value = brandProfile.altPhone2 || '';
+                document.getElementById('social-media').value = brandProfile.socialMedia || '';
+                document.getElementById('description').value = brandProfile.description || '';
+                document.getElementById('motto').value = brandProfile.motto || '';
+                document.getElementById('seo-keywords').value = brandProfile.seoKeywords || '';
+
+                const industrySelect = document.getElementById('industry');
+                brandProfile.industries.forEach(industry => {
+                    const option = Array.from(industrySelect.options).find(opt => opt.value === industry);
+                    if (option) option.selected = true;
+                });
+
+                updateSelectedIndustry();
+
+                if (brandProfile.images) {
+                    imageFiles = brandProfile.images;
+                    renderUpdatedImages();
+                }
+            }
+        };
+
+        document.querySelector('form').onsubmit = function(event) {
+            event.preventDefault();
+
+            const brandProfile = {
+                brandName: document.getElementById('brand-name').value,
+                address: document.getElementById('address').value,
+                altPhone1: document.getElementById('alt-phone1').value,
+                altPhone2: document.getElementById('alt-phone2').value,
+                socialMedia: document.getElementById('social-media').value,
+                description: document.getElementById('description').value,
+                motto: document.getElementById('motto').value,
+                seoKeywords: document.getElementById('seo-keywords').value,
+                industries: Array.from(document.getElementById('industry').selectedOptions).map(option => option.value),
+                images: imageFiles
+            };
+
+            localStorage.setItem('brandProfile', JSON.stringify(brandProfile));
+
+            alert('Profile saved successfully!');
+            window.location.href = 'brandsprofile.html';
+        };
+    </script>
+</body>
+</html>
